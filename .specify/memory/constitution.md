@@ -1,50 +1,67 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: none → 1.0.0
+- Modified principles: initialized
+- Added sections: Core Principles, Technology Constraints, Workflow & Quality Gates, Governance
+- Removed sections: none
+- Templates updated: plan-template.md ✅; spec-template.md ⚠️ not needed; tasks-template.md ⚠️ not needed; agent-file-template.md ⚠️ not needed; checklist-template.md ⚠️ not needed; commands templates ⚠️ not present
+- Follow-up TODOs: none
+-->
+
+# cms-backend Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Rust Axum/Serde with Strict Typing
+All backend services MUST use Rust with axum for HTTP routing and serde for
+serialization. Code MUST carry explicit types end-to-end, including request/response
+DTOs. JSON produced by the backend MUST be camelCase.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Safe Error Handling (No unwrap/expect)
+`unwrap`/`expect` are forbidden in production paths. Errors MUST propagate with `?`
+and be normalized via anyhow + thiserror (or equivalent) into consistent HTTP
+responses. Centralized handlers SHOULD map errors to API-friendly payloads.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Trait-Based Conversions for Data Shapes
+Cross-layer data transformations (DB ↔ domain ↔ DTO) SHOULD implement standard
+traits (From/TryFrom/TryInto/FromStr/Into) to ensure explicit, testable conversion
+paths and reduce ad-hoc mapping bugs.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Dependency Freshness
+Dependencies MUST target the latest available versions as of 2025-12-15. When
+adding/updating crates, prefer the newest stable release and document notable
+compatibility implications.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Testing Discipline & CI Gates
+Every API/endpoint MUST have unit tests. Run `cargo check` (and fix warnings) at
+each development stage. Favor TDD where practical; no feature is complete without
+tests covering success and failure paths.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Technology Constraints
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+- Language/stack: Rust + axum + serde; error handling via anyhow/thiserror.
+- JSON contract: camelCase keys for all backend-generated payloads.
+- Error policy: propagate with `?`; forbid `unwrap`/`expect` in production code.
+- Conversions: prefer trait implementations for data shape transitions.
+- Dependencies: track and adopt latest stable crate versions (as of 2025-12-15).
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+## Development Workflow & Quality Gates
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Run `cargo check` before committing and at every phase gate.
+- Add/maintain unit tests for each API/endpoint; include failure-path coverage.
+- Ensure request/response DTOs are fully typed and camelCase serialized.
+- Reviews must verify adherence to Principles I–V and that no `unwrap`/`expect`
+  slipped into production paths.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- This constitution governs backend development for cms-backend.
+- Compliance is required for all PRs; reviewers must block if principles are
+  violated.
+- Amendments require documentation of changes, rationale, and a semantic version
+  bump below.
+- Versioning: MAJOR for breaking/removing principles; MINOR for new principles or
+  material expansions; PATCH for clarifications.
+- Ratification date is the original adoption; Last Amended is updated on change.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-12-15 | **Last Amended**: 2025-12-15
