@@ -80,6 +80,12 @@
 <!--
   ACTION REQUIRED: The content in this section represents placeholders.
   Fill them out with the right functional requirements.
+  Constitution alignment:
+  - APIs/handlers must target Rust (axum + serde) with camelCase JSON contracts.
+  - Error handling uses Result propagation (no unwrap/expect); note expected
+    error cases.
+  - Plan unit tests for every interface (success + failure) and ensure cargo
+    check remains warning-free.
 -->
 
 ### Functional Requirements

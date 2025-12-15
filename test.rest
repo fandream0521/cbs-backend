@@ -1,0 +1,519 @@
+### Admin Backend API Test Suite
+### Base URL - Update this if your server runs on a different port
+@baseUrl = http://localhost:3000
+@token = Bearer demo-token-1
+
+### Variables (will be set after login)
+@authToken = 
+
+###############################################
+# 1. Health Check & Authentication
+###############################################
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Login - Get Token
+# @name login
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "name": "admin",
+  "password": "admin123"
+}
+
+### Test Token Validation
+GET {{baseUrl}}/test
+Authorization: {{authToken}}
+
+###############################################
+# 2. User Management (US1)
+###############################################
+
+### Create User
+# @name createUser
+POST {{baseUrl}}/users
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "testuser",
+  "realname": "Test User",
+  "password": "password123",
+  "cellphone": "13800138000",
+  "departmentId": null,
+  "roleId": null
+}
+
+### Get User by ID
+GET {{baseUrl}}/users/1
+Authorization: {{authToken}}
+
+### Update User
+PATCH {{baseUrl}}/users/1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "password": "newpassword123",
+  "cellphone": "13900139000"
+}
+
+### List Users
+POST {{baseUrl}}/users/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": ""
+}
+
+### List Users with Name Filter
+POST {{baseUrl}}/users/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": "test"
+}
+
+### Delete User
+DELETE {{baseUrl}}/users/1
+Authorization: {{authToken}}
+
+###############################################
+# 3. Department Management (US1)
+###############################################
+
+### Create Department
+# @name createDepartment
+POST {{baseUrl}}/department
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Engineering",
+  "parentId": null,
+  "leader": "John Doe"
+}
+
+### Get Department by ID
+GET {{baseUrl}}/department/1
+Authorization: {{authToken}}
+
+### Update Department
+PATCH {{baseUrl}}/department/1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "parentId": null,
+  "leader": "Jane Smith"
+}
+
+### List Departments
+POST {{baseUrl}}/department/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": ""
+}
+
+### Delete Department
+DELETE {{baseUrl}}/department/1
+Authorization: {{authToken}}
+
+###############################################
+# 4. Role Management (US1)
+###############################################
+
+### Create Role
+# @name createRole
+POST {{baseUrl}}/role
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Admin",
+  "intro": "Administrator role with full access"
+}
+
+### Get Role by ID
+GET {{baseUrl}}/role/1
+Authorization: {{authToken}}
+
+### Update Role
+PATCH {{baseUrl}}/role/1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "intro": "Updated administrator role description"
+}
+
+### List Roles
+POST {{baseUrl}}/role/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": ""
+}
+
+### Delete Role
+DELETE {{baseUrl}}/role/1
+Authorization: {{authToken}}
+
+###############################################
+# 5. Menu Management (US1)
+###############################################
+
+### Create Menu
+# @name createMenu
+POST {{baseUrl}}/menu
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Dashboard",
+  "type": 1,
+  "url": "/dashboard",
+  "icon": "dashboard-icon",
+  "sort": 1,
+  "parentId": null
+}
+
+### Create Sub Menu
+POST {{baseUrl}}/menu
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "User Management",
+  "type": 2,
+  "url": "/users",
+  "icon": "user-icon",
+  "sort": 1,
+  "parentId": 1
+}
+
+### Get Menu by ID
+GET {{baseUrl}}/menu/1
+Authorization: {{authToken}}
+
+### Update Menu
+PATCH {{baseUrl}}/menu/1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Dashboard",
+  "sort": 2
+}
+
+### List Menus
+POST {{baseUrl}}/menu/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": ""
+}
+
+### Delete Menu
+DELETE {{baseUrl}}/menu/1
+Authorization: {{authToken}}
+
+###############################################
+# 6. Goods Management (US2)
+###############################################
+
+### Create Goods
+# @name createGoods
+PATCH {{baseUrl}}/goods
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro",
+  "oldPrice": 9999.00,
+  "newPrice": 8999.00,
+  "desc": "Latest iPhone with advanced features",
+  "status": 1,
+  "imgUrl": "https://example.com/iphone15.jpg",
+  "inventoryCount": 100,
+  "saleCount": 50,
+  "favorCount": 200,
+  "address": "Beijing"
+}
+
+### Get Goods by ID
+GET {{baseUrl}}/goods/1
+Authorization: {{authToken}}
+
+### Update Goods
+PATCH {{baseUrl}}/goods/1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "iPhone 15 Pro Max",
+  "newPrice": 9999.00,
+  "inventoryCount": 80
+}
+
+### List Goods
+POST {{baseUrl}}/goods/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10
+}
+
+### Delete Goods
+DELETE {{baseUrl}}/goods/1
+Authorization: {{authToken}}
+
+###############################################
+# 7. Category Management (US2)
+###############################################
+
+### Create Category
+# @name createCategory
+POST {{baseUrl}}/category
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Electronics"
+}
+
+### Create Sub Category
+POST {{baseUrl}}/category
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Smartphones",
+  "parentId": 1
+}
+
+### Get Category by ID
+GET {{baseUrl}}/category/1
+Authorization: {{authToken}}
+
+### Update Category
+PATCH {{baseUrl}}/category/1
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "Updated Electronics",
+  "parentId": null
+}
+
+### List Categories
+POST {{baseUrl}}/category/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": ""
+}
+
+### List Categories with Name Filter
+POST {{baseUrl}}/category/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 10,
+  "name": "Elect"
+}
+
+### Delete Category
+DELETE {{baseUrl}}/category/1
+Authorization: {{authToken}}
+
+###############################################
+# 8. Story Management (US3)
+###############################################
+
+### Create Story
+# @name createStory
+POST {{baseUrl}}/story
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "title": "My First Story",
+  "content": "This is the content of my first story. It can be quite long and contain multiple paragraphs."
+}
+
+### List Stories
+POST {{baseUrl}}/story/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{}
+
+###############################################
+# 9. Menu Tree & Role Menu (US3)
+###############################################
+
+### Get Menu Tree
+POST {{baseUrl}}/menu/tree
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{}
+
+### Get Role Menu Tree
+GET {{baseUrl}}/role/1/menu
+Authorization: {{authToken}}
+
+### Get Role Menu IDs
+GET {{baseUrl}}/role/1/menuIds
+Authorization: {{authToken}}
+
+### Assign Menus to Role
+POST {{baseUrl}}/role/assign
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "roleId": 1,
+  "menuList": [1, 2, 3]
+}
+
+###############################################
+# 10. Metrics & Analytics (US3)
+###############################################
+
+### Get Category Counts
+GET {{baseUrl}}/goods/category/count
+Authorization: {{authToken}}
+
+### Get Category Sales
+GET {{baseUrl}}/goods/category/sale
+Authorization: {{authToken}}
+
+### Get Category Favors
+GET {{baseUrl}}/goods/category/favor
+Authorization: {{authToken}}
+
+### Get Top 10 Sales
+GET {{baseUrl}}/goods/sale/top10
+Authorization: {{authToken}}
+
+### Get Address Sales
+GET {{baseUrl}}/goods/address/sale
+Authorization: {{authToken}}
+
+### Get Goods Amount List
+GET {{baseUrl}}/goods/amount/list
+Authorization: {{authToken}}
+
+###############################################
+# 11. Error Cases & Validation Tests
+###############################################
+
+### Login with Invalid Credentials
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "name": "invalid",
+  "password": "wrongpassword"
+}
+
+### Create User with Empty Name (Should Fail)
+POST {{baseUrl}}/users
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "name": "",
+  "realname": "Test User",
+  "password": "password123"
+}
+
+### List Users with Invalid Pagination (size > 100)
+POST {{baseUrl}}/users/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": 0,
+  "size": 200,
+  "name": ""
+}
+
+### List Users with Negative Offset (Should Fail)
+POST {{baseUrl}}/users/list
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "offset": -1,
+  "size": 10,
+  "name": ""
+}
+
+### Access Protected Route Without Token (Should Fail)
+GET {{baseUrl}}/users/1
+
+### Access Protected Route with Invalid Token (Should Fail)
+GET {{baseUrl}}/users/1
+Authorization: Bearer invalid-token
+
+### Get Non-existent User (Should Return 404)
+GET {{baseUrl}}/users/99999
+Authorization: {{authToken}}
+
+### Create Story with Empty Title (Should Fail)
+POST {{baseUrl}}/story
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "title": "",
+  "content": "Some content"
+}
+
+### Create Story with Empty Content (Should Fail)
+POST {{baseUrl}}/story
+Authorization: {{authToken}}
+Content-Type: application/json
+
+{
+  "title": "Some Title",
+  "content": ""
+}
+
+###############################################
+# Usage Instructions:
+# 1. Start the server: cargo run
+# 2. First run the login request to get a token
+# 3. Copy the token from the response and update @authToken variable above
+# 4. Run other requests in order (create before get/update/delete)
+# 5. Update IDs in requests based on actual created resources
+###############################################
+

@@ -31,7 +31,17 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- Confirm language is Rust with explicit typing; unsafe usage is justified and
+  reviewed.
+- Routing/serialization uses axum + serde; errors use anyhow/thiserror with
+  conversion traits (From/TryFrom/Into/FromStr) at boundaries.
+- JSON request/response contracts are camelCase with documented schemas.
+- Dependencies are pinned to the latest stable versions as of 2025-12-15; new
+  additions are explicitly reviewed.
+- Error handling relies on `Result` with `?`; no `unwrap`/`expect` in proposed
+  design.
+- Every planned interface includes unit tests for success and failure paths.
+- Each stage plans to run `cargo check` clean before merge/release.
 
 ## Project Structure
 
