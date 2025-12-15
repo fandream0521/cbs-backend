@@ -31,14 +31,7 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-- Rust + axum + serde stack confirmed; DTOs fully typed with camelCase JSON.
-- Error handling uses `?` with anyhow/thiserror; no `unwrap`/`expect` in prod code.
-- Data shape conversions use trait implementations (From/TryFrom/TryInto/FromStr/Into)
-  instead of ad-hoc mapping.
-- Dependencies chosen at latest stable versions (as of 2025-12-15) with noted
-  compatibility impacts.
-- Each planned endpoint includes unit tests (success + failure paths) and plan
-  includes `cargo check` at each phase gate.
+[Gates determined based on constitution file]
 
 ## Project Structure
 
